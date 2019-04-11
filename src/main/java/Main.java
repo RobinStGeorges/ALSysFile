@@ -1,7 +1,10 @@
 /** Votre premier programme Java */
 class Main {
     public static void main (String[] args) {
-        Client.write();
+        Client client = new Client();
+        client.run();
+        client.run();
+
         String helloWorld ;
 
         Server server = new Server();
