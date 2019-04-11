@@ -6,7 +6,13 @@ import java.io.PrintWriter;
 public class Client {
     public static void write(){
         String helloWorld = "Hello World !";
-        File file = new File("C:\\Test\\testText.txt");
+
+        boolean success = (new File("C:\\test")).mkdirs();
+        if (!success) {
+            // Directory creation failed
+        }
+
+        File file = new File("C:\\test\\testText.txt");
         try {
             file.createNewFile();
             FileWriter fw = new FileWriter(file);

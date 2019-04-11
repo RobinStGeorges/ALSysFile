@@ -2,7 +2,7 @@ import java.io.*;
 
 public class Server {
     public static void readFile(){
-        File file = new File("C:\\Test\\testText.txt");
+        File file = new File("C:\\test\\testText.txt");
         String line = null;
         try {
             FileReader fileReader = new FileReader(file);
