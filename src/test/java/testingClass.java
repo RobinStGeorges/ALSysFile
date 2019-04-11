@@ -5,7 +5,9 @@ public class testingClass {
     @Test
     public void should_return_helloworld(){
         Client.write();
-
-        Assert.assertEquals("Hello World !",Server.readFile());
+        Server server = new Server();
+        server.run();
+        server.run();
+        Assert.assertEquals("Hello World !",server.getValue());
     }
 }
