@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_al" default="compile.module.al">
+  <dirname property="module.al.basedir" file="${ant.file.module_al}"/>
+  
+  <property name="module.jdk.home.al" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.al" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.al" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.al" value="-encoding UTF-8 -source 5 -target 1.5 ${compiler.args}"/>
+  
+  <property name="al.output.dir" value="${module.al.basedir}/target/classes"/>
+  <property name="al.testoutput.dir" value="${module.al.basedir}/target/test-classes"/>
+  
+  <path id="al.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="al.module.production.classpath">
+    <path refid="${module.jdk.classpath.al}"/>
+  </path>
+  
+  <path id="al.runtime.production.module.classpath">
+    <pathelement location="${al.output.dir}"/>
+  </path>
+  
+  <path id="al.module.classpath">
+    <path refid="${module.jdk.classpath.al}"/>
+    <pathelement location="${al.output.dir}"/>
+  </path>
+  
+  <path id="al.runtime.module.classpath">
+    <pathelement location="${al.testoutput.dir}"/>
+    <pathelement location="${al.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.al">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.al">
+    <patternset refid="excluded.from.module.al"/>
+  </patternset>
+  
+  <path id="al.module.sourcepath">
+    <dirset dir="${module.al.basedir}">
+      <include name="src/main/java"/>
+      <include name="src/main/resources"/>
+    </dirset>
+  </path>
+  
+  <path id="al.module.test.sourcepath">
+    <dirset dir="${module.al.basedir}">
+      <include name="src/test/java"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.al" depends="compile.module.al.production,compile.module.al.tests" description="Compile module al"/>
+  
+  <target name="compile.module.al.production" depends="register.custom.compilers" description="Compile module al; production classes">
+    <mkdir dir="${al.output.dir}"/>
+    <javac2 destdir="${al.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.al}/javac">
+      <compilerarg line="${compiler.args.al}"/>
+      <bootclasspath refid="al.module.bootclasspath"/>
+      <classpath refid="al.module.production.classpath"/>
+      <src refid="al.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.al"/>
+    </javac2>
+    
+    <copy todir="${al.output.dir}">
+      <fileset dir="${module.al.basedir}/src/main/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.al.basedir}/src/main/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.al.tests" depends="register.custom.compilers,compile.module.al.production" description="compile module al; test classes" unless="skip.tests">
+    <mkdir dir="${al.testoutput.dir}"/>
+    <javac2 destdir="${al.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.al}/javac">
+      <compilerarg line="${compiler.args.al}"/>
+      <bootclasspath refid="al.module.bootclasspath"/>
+      <classpath refid="al.module.classpath"/>
+      <src refid="al.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.al"/>
+    </javac2>
+    
+    <copy todir="${al.testoutput.dir}">
+      <fileset dir="${module.al.basedir}/src/test/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.al" description="cleanup module">
+    <delete dir="${al.output.dir}"/>
+    <delete dir="${al.testoutput.dir}"/>
+  </target>
+</project>
