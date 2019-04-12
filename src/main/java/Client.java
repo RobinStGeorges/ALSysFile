@@ -22,24 +22,4 @@ public class Client extends Thread {
             e.printStackTrace();
         }
     }
-
-    public static void write(){
-        String helloWorld = "Hello World !";
-
-        boolean success = (new File("C:\\test")).mkdirs();
-        if (!success) {
-            // Directory creation failed
-        }
-
-        File file = new File("C:\\test\\testText.txt");
-        try {
-            file.createNewFile();
-            FileWriter fw = new FileWriter(file);
-            fw.write(helloWorld);
-            fw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 }

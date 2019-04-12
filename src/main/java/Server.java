@@ -32,6 +32,15 @@ public class Server extends Thread {
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             while((line = bufferedReader.readLine())!=null){
                 System.out.println(line);
+                if(line.equals("Hello World !")){
+                    try {
+                        FileWriter fw = new FileWriter(file);
+                        fw.write("Code : 200");
+                        fw.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
                 return line;
             }
         } catch (FileNotFoundException e) {
